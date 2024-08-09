@@ -1,5 +1,6 @@
 {% extends "partials/base.html" %}
 {% load static %}
+{% load custom_filters %}
 {% block main %}
 <main>
     <section class="swiper-container js-swiper-slider slideshow type3 slideshow-navigation-white-sm" data-settings='{
@@ -378,6 +379,12 @@
                                         <div
                                             class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
 
+                                            {% for product in summer_sale %}
+                                {% with gst_amount=gst_amounts|get_item:product.id %}
+                                    <input type="hidden" value="{{ gst_amount }}" class="gst-applied-{{ product.pid }}">
+                                {% endwith %}
+                            {% endfor %}
+
                                             <input type="hidden" value="{{best_picks.pid}}" class="product-id">
 
                                             <input type="hidden" value="{{best_picks.pid}}" id="product-quantity-{{products.pid}}" class="product-id-{{best_picks.pid}}">
@@ -473,6 +480,11 @@
                             </div>
 
                             <div class="d-flex align-items-center hover__content position-relative mt-3 mt-sm-0">
+                                {% for product in new_arrival %}
+                                {% with gst_amount=gst_amounts|get_item:product.id %}
+                                    <input type="hidden" value="{{ gst_amount }}" class="gst-applied-{{ product.pid }}">
+                                {% endwith %}
+                            {% endfor %}
                               <input type="hidden" value="{{new_arrivals.pid}}" class="product-id">
 
                               <input type="hidden" value="{{new_arrivals.pid}}" id="product-quantity-{{products.pid}}" class="product-id-{{new_arrivals.pid}}">

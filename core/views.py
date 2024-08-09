@@ -52,6 +52,8 @@ def index(request):
 
     first_half_categories = main_categories[:halfway_index]
     second_half_categories = main_categories[halfway_index:]
+
+    gst_amounts = {}
     
     for product in summer_sale:
         # Check if the product has variants
@@ -80,6 +82,7 @@ def index(request):
         else:
             # Use the existing price for the product if it doesn't have variants
             product.gst_inclusive_price = product.price * (1 + Decimal(product.gst_rate.strip('%')) / 100)
+            gst_amount = product.price * Decimal(gst_rate.strip('%')) / 100
             product.variant_price = None
             product.first_variant_type_title = None
             product.first_variant_type_id = None
@@ -112,6 +115,7 @@ def index(request):
         else:
         # Use the existing price for the product if it doesn't have variants
             product.gst_inclusive_price = product.price * (1 + Decimal(product.gst_rate.strip('%')) / 100)
+            gst_amount = product.price * Decimal(gst_rate.strip('%')) / 100
             product.variant_price = None
             product.first_variant_type_title = None
             product.first_variant_type_id = None
@@ -128,6 +132,7 @@ def index(request):
         "product_variants": product_variants,
         "product_variant_types": product_variant_types,
         "testimonials": testimonials,
+        "gst_amounts": gst_amounts,
     }
 
     return render(request, 'core/index.html', context)
