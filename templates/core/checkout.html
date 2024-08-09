@@ -24,7 +24,7 @@
             {% csrf_token %}
             <div class="checkout-form">
                 <div class="billing-info__wrapper">
-                    <h4>BILLING DETAILS</h4>
+                    <h4>SHIPPING DETAILS</h4>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-floating my-3">
@@ -101,20 +101,113 @@
                                 <label for="checkout_state">State *</label>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <!-- <div class="col-md-12">
                             <div class="form-floating mt-3 mb-3">
                                 <input type="text" class="form-control" id="checkout_street_address"
                                     placeholder="Billing Address *" />
                                 <label for="checkout_street_address">Billing Address *</label>
                             </div>
-                        </div>
-                        <div class="col-md-12">
+                        </div> -->
+                        <!-- <div class="col-md-12">
                             <div class="form-floating mt-3 mb-3">
                                 <input type="text" class="form-control" id="checkout_shipping_address"
                                     placeholder="Shipping Address *" />
                                 <label for="checkout_shipping_address">Shipping Address *</label>
                             </div>
+                        </div> -->
+                        <div class="col-md-12">
+                            <div class="form-floating mt-3 mb-3">
+                                <input type="text" class="form-control" id="shipping_street_address" name="shipping_street_address" placeholder="Street Address *" required />
+                                <label for="shipping_street_address">Street Address *</label>
+                            </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-floating mt-3 mb-3">
+                                <input type="text" class="form-control" id="shipping_address_line1" name="shipping_address_line1" placeholder="Address Line 1" />
+                                <label for="shipping_address_line1">Address Line 1</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating mt-3 mb-3">
+                                <input type="text" class="form-control" id="shipping_address_line2" name="shipping_address_line2" placeholder="Address Line 2" />
+                                <label for="shipping_address_line2">Address Line 2</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-check mt-3">
+                                <input class="form-check-input" type="checkbox" id="billing_same_as_shipping" />
+                                <label class="form-check-label" for="billing_same_as_shipping">Billing address same as shipping address</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-check mt-1">
+                                <input class="form-check-input" type="checkbox" id="different_billing_address" />
+                                <label class="form-check-label" for="different_billing_address">Different Billing Address?</label>
+                            </div>
+                        </div>
+
+                        <!-- billing address -->
+                        <div id="billing_address" style="display:none;">
+                        <h4>BILLING DETAILS</h4>
+                        <div class="col-md-12">
+                            <div class="form-floating my-3">
+                                <input type="text" class="form-control" id="billing_zipcode" name="billing_zipcode" placeholder="Billing ZIP Code *" />
+                                <label for="billing_zipcode">Billing ZIP Code *</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating my-3">
+                                <select class="form-control" id="billing_pin_details_dropdown" onchange="updatePinDetailss()">
+                                    <option value="">Select your area</option>
+                                </select>
+                                <label for="billing_pin_details_dropdown">Select Area</label>
+                            </div>
+                        </div>
+        
+                        <div class="col-md-12">
+                            <div class="form-floating my-3">
+                                <input type="text" class="form-control" id="billing_checkout_city" placeholder="Town / City *" />
+                                <label for="billing_checkout_city">City *</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating my-3">
+                                <input type="text" class="form-control" id="billing_checkout_district" placeholder="District *" />
+                                <label for="billing_checkout_district">District *</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating my-3">
+                                <input type="text" class="form-control" id="billing_checkout_division" placeholder="Division *" />
+                                <label for="billing_checkout_division">Division *</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating my-3">
+                                <input type="text" class="form-control" id="billing_checkout_state" placeholder="State *" />
+                                <label for="billing_checkout_state">State *</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating mt-3 mb-3">
+                                <input type="text" class="form-control" id="billing_street_address" name="billing_street_address" placeholder="Street Address *" required />
+                                <label for="billing_street_address">Billing Street Address *</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating mt-3 mb-3">
+                                <input type="text" class="form-control" id="billing_address_line1" name="billing_address_line1" placeholder="Billing Address Line 1" />
+                                <label for="billing_address_line1">Billing Address Line 1</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating mt-3 mb-3">
+                                <input type="text" class="form-control" id="billing_address_line2" name="billing_address_line2" placeholder="Billing Address Line 2" />
+                                <label for="billing_address_line2">Billing Address Line 2</label>
+                            </div>
+                        </div>
+                        </div>
+                        <!-- billing address -->
                         <div class="col-md-12">
                             <div class="form-floating my-3">
                                 <input type="text" class="form-control" id="checkout_phone" placeholder="Phone *" />
@@ -224,14 +317,23 @@
                 'gst_number': document.getElementById("checkout_gst_number").value.trim(),
                 'zipcode': document.getElementById("checkout_zipcode").value.trim(),
                 'city': document.getElementById("checkout_city").value.trim(),
-                'street_address': document.getElementById("checkout_street_address").value.trim(),
-                'shipping_address': document.getElementById("checkout_shipping_address").value.trim(),
                 'phone': document.getElementById("checkout_phone").value.trim(),
                 'email': document.getElementById("checkout_email").value.trim(),
                 'checkout_city': document.getElementById("checkout_city").value.trim(),
                 'checkout_district': document.getElementById("checkout_district").value.trim(),
                 'checkout_division': document.getElementById("checkout_division").value.trim(),
                 'checkout_state': document.getElementById("checkout_state").value.trim(),
+                'shipping_street_address': document.getElementById("shipping_street_address").value.trim(),
+                'shipping_address_line1': document.getElementById("shipping_address_line1").value.trim(),
+                'shipping_address_line2': document.getElementById("shipping_address_line2").value.trim(),
+                'billing_zipcode': document.getElementById("billing_zipcode").value.trim(),
+                'billing_checkout_city': document.getElementById("billing_checkout_city").value.trim(),
+                'billing_checkout_district': document.getElementById("billing_checkout_district").value.trim(),
+                'billing_checkout_division': document.getElementById("billing_checkout_division").value.trim(),
+                'billing_checkout_state': document.getElementById("billing_checkout_state").value.trim(),
+                'billing_street_address': document.getElementById("billing_street_address").value.trim(),
+                'billing_address_line1': document.getElementById("billing_address_line1").value.trim(),
+                'billing_address_line2': document.getElementById("billing_address_line2").value.trim(),
             };
 
             var queryParams = Object.keys(formData).map(key => key + '=' + encodeURIComponent(formData[key])).join('&');
@@ -286,8 +388,6 @@
     function validateForm() {
         var firstName = document.getElementById("checkout_first_name").value.trim();
         var lastName = document.getElementById("checkout_last_name").value.trim();
-        var streetAddress = document.getElementById("checkout_street_address").value.trim();
-        var shippingAddress = document.getElementById("checkout_shipping_address").value.trim();
         var gst_number = document.getElementById("checkout_gst_number").value.trim();
         var city = document.getElementById("checkout_city").value.trim();
         var zipcode = document.getElementById("checkout_zipcode").value.trim();
@@ -297,8 +397,12 @@
         var checkout_district = document.getElementById("checkout_district").value.trim();
         var checkout_division = document.getElementById("checkout_division").value.trim();
         var checkout_state = document.getElementById("checkout_state").value.trim();
+        var shipping_street_address = document.getElementById("shipping_street_address").value.trim();
+        var shipping_address_line1 = document.getElementById("shipping_address_line1").value.trim();
+        var shipping_address_line2 = document.getElementById("shipping_address_line2").value.trim();
+        
     
-        if (firstName === '' || lastName === '' || streetAddress === '' || shippingAddress === '' || city === '' || zipcode === '' || phone === '' || email === '' || checkout_city === '' || checkout_district === '' || checkout_division === '' || checkout_state === '') {
+        if (firstName === '' || lastName === '' || city === '' || zipcode === '' || phone === '' || email === '' || checkout_city === '' || checkout_district === '' || checkout_division === '' || checkout_state === '' || shipping_street_address === '' || shipping_address_line1 === '' || shipping_address_line2 === '') {
             alert('Please fill in all details.');
             return false;
         } else if (phone.length !== 10 || isNaN(phone)) {
@@ -342,10 +446,37 @@ function fetchAddressDetails(zipcode) {
     });
 }
 
+function fetchAddressDetailss(zipcode) {
+    $.ajax({
+        url: '/fetch-pin-details',
+        type: 'GET',
+        data: { 'zipcode': zipcode },
+        success: function(response) {
+            if (response.success) {
+                pinDetailsList = response.data;
+                var dropdown = $('#billing_pin_details_dropdown');
+                dropdown.empty();
+                dropdown.append('<option value="">Select your area</option>');
+
+                pinDetailsList.forEach(function(pinDetails, index) {
+                    dropdown.append('<option value="' + index + '">' + pinDetails.Name + '</option>');
+                });
+            }
+        },
+    });
+}
+
 $('#checkout_zipcode').on('input', function() {
     var zipcode = $(this).val().trim();
     if (zipcode !== '') {
         fetchAddressDetails(zipcode);
+    }
+});
+
+$('#billing_zipcode').on('input', function() {
+    var zipcode = $(this).val().trim();
+    if (zipcode !== '') {
+        fetchAddressDetailss(zipcode);
     }
 });
 
@@ -357,6 +488,17 @@ function updatePinDetails() {
         $('#checkout_district').val(selectedPinDetails.District);
         $('#checkout_division').val(selectedPinDetails.Division);
         $('#checkout_state').val(selectedPinDetails.State);
+    }
+}
+
+function updatePinDetailss() {
+    var selectedIndex = $('#billing_pin_details_dropdown').val();
+    if (selectedIndex !== "") {
+        var selectedPinDetails = pinDetailsList[selectedIndex];
+        $('#billing_checkout_city').val(selectedPinDetails.Name);
+        $('#billing_checkout_district').val(selectedPinDetails.District);
+        $('#billing_checkout_division').val(selectedPinDetails.Division);
+        $('#billing_checkout_state').val(selectedPinDetails.State);
     }
 }
 
@@ -377,6 +519,58 @@ function updatePinDetails() {
 
     toggleGstFields();
     document.getElementById("create_account").addEventListener("change", toggleGstFields);
+</script>
+
+<script>
+    document.getElementById('billing_same_as_shipping').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('billing_address').style.display = 'none';
+        fillBillingAddress();
+    } else {
+        document.getElementById('billing_address').style.display = 'none';
+        clearBillingAddress();
+    }
+});
+
+document.getElementById('different_billing_address').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('billing_address').style.display = 'block';
+        document.getElementById('billing_same_as_shipping').checked = false;
+    } else {
+        document.getElementById('billing_address').style.display = 'none';
+        clearBillingAddress();
+    }
+});
+
+function fillBillingAddress() {
+    document.getElementById('billing_zipcode').value = document.getElementById('checkout_zipcode').value;
+    document.getElementById('billing_checkout_city').value = document.getElementById('checkout_city').value;
+    document.getElementById('billing_checkout_district').value = document.getElementById('checkout_district').value;
+    document.getElementById('billing_checkout_division').value = document.getElementById('checkout_division').value;
+    document.getElementById('billing_checkout_state').value = document.getElementById('checkout_state').value;
+    document.getElementById('billing_street_address').value = document.getElementById('shipping_street_address').value;
+    document.getElementById('billing_address_line1').value = document.getElementById('shipping_address_line1').value;
+    document.getElementById('billing_address_line2').value = document.getElementById('shipping_address_line2').value;
+}
+
+function clearBillingAddress() {
+    document.getElementById('billing_zipcode').value = '';
+    document.getElementById('billing_checkout_city').value = '';
+    document.getElementById('billing_checkout_district').value = '';
+    document.getElementById('billing_checkout_division').value = '';
+    document.getElementById('billing_checkout_state').value = '';
+    document.getElementById('billing_street_address').value = '';
+    document.getElementById('billing_address_line1').value = '';
+    document.getElementById('billing_address_line2').value = '';
+}
+
+</script>
+
+<script>
+    document.getElementById("different_billing_address").addEventListener("change", function() {
+        var isChecked = this.checked;
+        document.getElementById("billing_address").style.display = isChecked ? "block" : "none";
+    });
 </script>
 
 

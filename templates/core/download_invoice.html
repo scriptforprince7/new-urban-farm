@@ -23,7 +23,7 @@
         <div class="cs-invoice_head cs-type1 cs-mb25">
           <div class="cs-invoice_left">
             <p class="cs-invoice_number cs-primary_color cs-mb5 cs-f16"><b class="cs-primary_color"></b><b>TAX INVOICE</b> <span style="border: 1px solid grey; color: grey; font-size: 12px; padding: 3px;">ORIGINAL FOR RECIPIENT</span> </p>
-            <p class="cs-invoice_number cs-primary_color cs-mb5 cs-f16"><b class="cs-primary_color">Invoice No:</b> VRHINV- {{ order.id }} </p>
+            <p class="cs-invoice_number cs-primary_color cs-mb5 cs-f16"><b class="cs-primary_color">Invoice No:</b> URBNINV- {{ order.id }} </p>
             <p class="cs-invoice_date cs-primary_color cs-m0"><b class="cs-primary_color">Date: </b>{{ order.order_date }}</p>
           </div>
           <div class="cs-invoice_right cs-text_right">
@@ -43,8 +43,8 @@
             <b class="cs-primary_color">Bill To:</b>
             <p>
                 <b>{{ first_name }} {{ last_name }}</b> <br>
-                {{ billing_address }}<br>
-                {{ zipcode }} <br> 
+                {{ billing_street_address }}<br>
+                {{ billing_zipcode }} <br> 
                <b>{{ phone }}</b> 
             </p>
         </div>
@@ -52,7 +52,7 @@
         <div class="cs-invoice_right">
             <b class="cs-primary_color">Ship To:</b>
             <p>
-                <b>{{ shipping_address }}</b> <br>
+                <b>{{ shipping_street_address }}</b> <br>
                 {{ zipcode }}
             </p>
             {% if gst_number %}

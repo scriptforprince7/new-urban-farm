@@ -99,36 +99,82 @@ function updateCartItemsList(cartData) {
 
   // Iterate over cart items and append them to the list
   $.each(cartData, function (productId, item) {
-    var productUrl = generateProductUrl(baseUrl, item.title);
-    var itemHtml = `
-              <div class="cart-drawer-item d-flex position-relative">
-                  <div class="position-relative">
-                      <img loading="lazy" class="cart-drawer-item__img" src="${item.image}" alt="${item.title}" />
-                  </div>
-                  <div class="cart-drawer-item__info flex-grow-1">
-                      <a href="${productUrl}">
-                          <h6 class="cart-drawer-item__title fw-normal">${item.title}</h6>
-                      </a>
-                      <p class="cart-drawer-item__option text-secondary">Sku ID: ${item.sku}</p>
-                      <div class="d-flex align-items-center justify-content-between mt-1">
-                          <div class="position-relative">
-                              <span>Qty:</span> <span class="cart-drawer-item__price money price" style="font-size: 1em;">${item.qty}</span>
-                          </div>
-                          <span class="cart-drawer-item__price money price">₹ ${item.price}</span>
-                      </div>
-                  </div>
-                  <button class="btn-close-xs position-absolute top-0 end-0 remove-cart delete-product" data-product="${productId}"></button>
+      var productUrl = generateProductUrl(baseUrl, item.title);
+      var itemHtml = `
+          <div class="cart-drawer-item d-flex position-relative">
+              <div class="position-relative">
+                  <img loading="lazy" class="cart-drawer-item__img" src="${item.image}" alt="${item.title}" />
               </div>
-              <hr class="cart-drawer-divider" />`; // Add HR after each item
-    cartItemsList.append(itemHtml);
+              <div class="cart-drawer-item__info flex-grow-1">
+                  <a href="${productUrl}">
+                      <h6 class="cart-drawer-item__title fw-normal">${item.title}</h6>
+                  </a>
+                  <p class="cart-drawer-item__option text-secondary">Sku ID: ${item.sku}</p>
+                  <div class="d-flex align-items-center justify-content-between mt-1">
+                      <div class="qty-control position-relative">
+                          <input type="number" name="quantity" value="${item.qty}" min="1"
+                              class="qty-control__number border-0 text-center update-product product-qty-${productId}" data-product="${productId}" />
+                          <div class="qty-control__reduce text-start update-product" data-product="${productId}">-</div>
+                          <div class="qty-control__increase text-end update-product" data-product="${productId}">+</div>
+                      </div>
+                      <span class="cart-drawer-item__price money price">₹ ${item.price}</span>
+                  </div>
+              </div>
+              <button class="btn-close-xs position-absolute top-0 end-0 remove-cart delete-product" data-product="${productId}"></button>
+          </div>
+          <hr class="cart-drawer-divider" />`; // Add HR after each item
+      cartItemsList.append(itemHtml);
 
-    // Add item price to subtotal
-    subtotalAmount += parseFloat(item.price) * item.qty;
+      // Add item price to subtotal
+      subtotalAmount += parseFloat(item.price) * item.qty;
   });
 
   // Update subtotal amount
   $(".cart-subtotal").text(`₹ ${subtotalAmount.toFixed(2)}`);
+
+  // Attach event listeners for quantity increase and decrease buttons
+  cartItemsList.on("click", ".qty-control__increase", function () {
+      var productId = $(this).data("product");
+      updateQuantity(productId, 1);
+  });
+
+  cartItemsList.on("click", ".qty-control__reduce", function () {
+      var productId = $(this).data("product");
+      updateQuantity(productId, -1);
+  });
+
+  // Function to handle quantity update
+  function updateQuantity(productId, change) {
+      var inputField = $(".product-qty-" + productId);
+      var newQty = parseInt(inputField.val()) + change;
+
+      if (newQty >= 1) {
+          inputField.val(newQty);
+
+          $.ajax({
+      url: "/update-cart",
+      data: {
+        id: productId,
+        qty: newQty,
+        refresh_page: true,
+      },
+      dataType: "json",
+      success: function (response) {
+        $(".cart-items-count").text(response.totalcartitems);
+        $("#cart-list").html(response.data);
+
+        if (response.refresh_page) {
+          // Refresh the page
+          window.location.reload();
+        }
+      },
+    });
+      }
+  }
 }
+
+
+
 
 $(document).ready(function () {
   // Event delegation for delete buttons

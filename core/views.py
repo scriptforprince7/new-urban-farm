@@ -523,6 +523,17 @@ def payment_invoice(request):
     checkout_district = query_params.get('checkout_district')
     checkout_division = query_params.get('checkout_division')
     checkout_state = query_params.get('checkout_state')
+    shipping_street_address = query_params.get('shipping_street_address')
+    shipping_address_line1 = query_params.get('shipping_address_line1')
+    shipping_address_line2 = query_params.get('shipping_address_line2')
+    billing_zipcode = query_params.get('billing_zipcode')
+    billing_checkout_city = query_params.get('billing_checkout_city')
+    billing_checkout_district = query_params.get('billing_checkout_district')
+    billing_checkout_division = query_params.get('billing_checkout_division')
+    billing_checkout_state = query_params.get('billing_checkout_state')
+    billing_street_address = query_params.get('billing_street_address')
+    billing_address_line1 = query_params.get('billing_address_line1')
+    billing_address_line2 = query_params.get('billing_address_line2')
     cart_total_amount = 0
     total_amount = 0
     price_wo_gst_total = 0
@@ -617,8 +628,17 @@ def payment_invoice(request):
                 district=checkout_district,
                 division=checkout_division,
                 state=checkout_state,
-                billingaddress=street_address,
-                shippingaddress=shipping_address,
+                shipping_street_address=shipping_street_address,
+                shipping_address_line1=shipping_address_line1,
+                shipping_address_line2=shipping_address_line2,
+                billing_zipcode=billing_zipcode,
+                billing_checkout_city=billing_checkout_city,
+                billing_checkout_district=billing_checkout_district,
+                billing_checkout_division=billing_checkout_division,
+                billing_checkout_state=billing_checkout_state,
+                billing_street_address=billing_street_address,
+                billing_address_line1=billing_address_line1,
+                billing_address_line2=billing_address_line2,
                 phone=phone,
                 email=email,
                 price_wo_gst_total=price_wo_gst_total,
@@ -689,6 +709,11 @@ def payment_invoice(request):
             'phone': phone,
             'current_datetime':current_datetime,
             'email': email,
+            "shipping_street_address":shipping_street_address,
+            "billing_street_address": billing_street_address,
+            "billing_address_line1":billing_address_line1,
+            "billing_address_line2":billing_address_line2,
+            "billing_zipcode":billing_zipcode,
             "cgst_amount": cgst_amount,
             "sgst_amount": sgst_amount,
             "igst_amount": igst_amount,
@@ -872,8 +897,17 @@ def generate_invoice(request, order_id):
             'district': order.district,
             'division': order.division,
             'state': order.state,
-            'billing_address': order.billingaddress,
-            'shipping_address': order.shippingaddress,
+            'shipping_street_address': order.shipping_street_address,
+            'shipping_address_line1': order.shipping_address_line1,
+            'shipping_address_line2': order.shipping_address_line2,
+            'billing_zipcode': order.billing_zipcode,
+            'billing_address_line2': order.billing_address_line2,
+            'billing_checkout_city': order.billing_checkout_city,
+            'billing_checkout_district': order.billing_checkout_district,
+            'billing_checkout_division': order.billing_checkout_division,
+            'billing_checkout_state': order.billing_checkout_state,
+            'billing_street_address': order.billing_street_address,
+            'billing_address_line1': order.billing_address_line1,
             'company_name': order.companyname,
             'gst_number': order.gstnumber,
         }
@@ -893,10 +927,19 @@ def generate_invoice(request, order_id):
         'district': order.district,
         'division': order.division,
         'state': order.state,
-        'billing_address': order.billingaddress,
-        'shipping_address': order.shippingaddress,
         'company_name': order.companyname,
         'gst_number': order.gstnumber,
+        'shipping_street_address': order.shipping_street_address,
+        'shipping_address_line1': order.shipping_address_line1,
+        'shipping_address_line2': order.shipping_address_line2,
+        'billing_zipcode': order.billing_zipcode,
+        'billing_address_line2': order.billing_address_line2,
+        'billing_checkout_city': order.billing_checkout_city,
+        'billing_checkout_district': order.billing_checkout_district,
+        'billing_checkout_division': order.billing_checkout_division,
+        'billing_checkout_state': order.billing_checkout_state,
+        'billing_street_address': order.billing_street_address,
+        'billing_address_line1': order.billing_address_line1,
         'price_wo_gst_total': price_wo_gst_total,  # Add price_wo_gst_total to context
         'cart_total_amount_words': cart_total_amount_words
     }
@@ -913,15 +956,15 @@ def generate_invoicee(request, order_id):
     price_wo_gst_total = Decimal('0')
     for item in cart_items:
         cart_data[item.id] = {
-            'title': item.item,
+            'title': item.item,  # Assuming 'item' is a string
             'qty': item.qty,
             'price': item.price,
             'image': item.image,
             'invoice_no': item.invoice_no,
             'product_status': item.product_status,
             'total': item.total,
-            'price_wo_gst': item.price_wo_gst,
-            'gst_rates_final': item.gst_rates_final,
+            'price_wo_gst': item.price_wo_gst,  # Use the correct field name
+            'gst_rates_final': item.gst_rates_final,  # Include gst_rates_final
             'first_name': order.firstname,
             'last_name': order.lastname,
             'zipcode': order.zipcode,
@@ -932,8 +975,17 @@ def generate_invoicee(request, order_id):
             'district': order.district,
             'division': order.division,
             'state': order.state,
-            'billing_address': order.billingaddress,
-            'shipping_address': order.shippingaddress,
+            'shipping_street_address': order.shipping_street_address,
+            'shipping_address_line1': order.shipping_address_line1,
+            'shipping_address_line2': order.shipping_address_line2,
+            'billing_zipcode': order.billing_zipcode,
+            'billing_address_line2': order.billing_address_line2,
+            'billing_checkout_city': order.billing_checkout_city,
+            'billing_checkout_district': order.billing_checkout_district,
+            'billing_checkout_division': order.billing_checkout_division,
+            'billing_checkout_state': order.billing_checkout_state,
+            'billing_street_address': order.billing_street_address,
+            'billing_address_line1': order.billing_address_line1,
             'company_name': order.companyname,
             'gst_number': order.gstnumber,
         }
@@ -942,7 +994,7 @@ def generate_invoicee(request, order_id):
 
     context = {
         'order': order,
-        'cart_data': cart_data,
+        'cart_data': cart_data,  # Adjust if needed
         'first_name': order.firstname,
         'last_name': order.lastname,
         'zipcode': order.zipcode,
@@ -953,11 +1005,20 @@ def generate_invoicee(request, order_id):
         'district': order.district,
         'division': order.division,
         'state': order.state,
-        'billing_address': order.billingaddress,
-        'shipping_address': order.shippingaddress,
         'company_name': order.companyname,
         'gst_number': order.gstnumber,
-        'price_wo_gst_total': price_wo_gst_total,
+        'shipping_street_address': order.shipping_street_address,
+        'shipping_address_line1': order.shipping_address_line1,
+        'shipping_address_line2': order.shipping_address_line2,
+        'billing_zipcode': order.billing_zipcode,
+        'billing_address_line2': order.billing_address_line2,
+        'billing_checkout_city': order.billing_checkout_city,
+        'billing_checkout_district': order.billing_checkout_district,
+        'billing_checkout_division': order.billing_checkout_division,
+        'billing_checkout_state': order.billing_checkout_state,
+        'billing_street_address': order.billing_street_address,
+        'billing_address_line1': order.billing_address_line1,
+        'price_wo_gst_total': price_wo_gst_total,  # Add price_wo_gst_total to context
         'cart_total_amount_words': cart_total_amount_words
     }
 
