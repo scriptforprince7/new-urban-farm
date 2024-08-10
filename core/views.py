@@ -1096,7 +1096,7 @@ def product_new(request, title):
     product_variant_types = ProductVariantTypes.objects.filter(product_variant__in=product_variants, in_stock=True)
     product_variations = ProductVariation.objects.filter(product=product, status=True)
     product_variation_types = ProductVariationTypes.objects.filter(product_variation__in=product_variations)
-    related_products = Product.objects.filter(main_category=product.main_category).exclude(pid=product.pid)[:10]
+    related_products = Product.objects.filter(main_category=product.main_category, product_status="published").exclude(pid=product.pid)[:10]
     related_maincategory = product.main_category
 
     variation_prices = []
