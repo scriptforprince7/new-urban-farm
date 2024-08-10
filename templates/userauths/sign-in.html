@@ -39,7 +39,7 @@
                 <input name="remember" class="form-check-input form-check-input_fill" type="checkbox" value="" id="flexCheckDefault1" />
                 <label class="form-check-label text-secondary" for="flexCheckDefault1">Remember me</label>
               </div>
-              {% comment %} <a href="reset_password.php" class="btn-text ms-auto">Lost password?</a> {% endcomment %}
+               <a href="{% url 'userauths:password-reset-request' %}" class="btn-text ms-auto">Lost password?</a>
             </div>
 
             <button class="btn btn-primary w-100 text-uppercase" type="submit">
@@ -48,7 +48,7 @@
 
             <div class="customer-option mt-4 text-center">
               <span class="text-secondary">No account yet?</span>
-              <a href="/user/sign-up" class="btn-text js-show-register">Create Account</a>
+              <a href="/user/sign-up" class="btn-text js-show-register">Create Account</a> <br>
             </div>
           </form>
 
