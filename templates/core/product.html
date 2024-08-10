@@ -300,6 +300,7 @@
 <div class="qty-control__reduce" onclick="decreaseQuantity({{ products.pid }}, {{ products.maximum_order_qty }})">-</div>
 <div class="qty-control__increase" onclick="increaseQuantity({{ products.pid }}, {{ products.maximum_order_qty }})">+</div>
 
+
             </div>
             <!-- .qty-control -->
             <input type="hidden" value="{{products.pid}}" class="product-id">
@@ -623,35 +624,35 @@ function updateSwatchSelection() {
 }
 
 </script>
-<script>
+
   <script>
     function increaseQuantity(pid, maxQty) {
-      const quantityInput = document.getElementById(`product-quantity-${pid}`);
-      let currentQuantity = parseInt(quantityInput.value);
-  
-      if (currentQuantity < maxQty) {
-        quantityInput.value = currentQuantity + 1;
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Max quantity exceeded',
-        });
-      }
-    }
-  
-    function decreaseQuantity(pid, maxQty) {
-      const quantityInput = document.getElementById(`product-quantity-${pid}`);
-      let currentQuantity = parseInt(quantityInput.value);
-  
-      if (currentQuantity > 1) {
-        quantityInput.value = currentQuantity - 1;
-      }
-    }
-  </script>
-  
+  let quantityInput = $(".product-quantity-" + pid);
+  let currentQty = parseInt(quantityInput.val());
 
-</script>
+  if (currentQty >= maxQty) {
+      Swal.fire({
+          position: "top-end",
+          icon: "warning",
+          title: "Maximum order quantity exceeded",
+          showConfirmButton: false,
+          timer: 1500,
+      });
+      return;
+  }
+
+  quantityInput.val(currentQty + 1);
+}
+
+function decreaseQuantity(pid, maxQty) {
+  let quantityInput = $(".product-quantity-" + pid);
+  let currentQty = parseInt(quantityInput.val());
+
+  if (currentQty > 1) {
+      quantityInput.val(currentQty - 1);
+  }
+}
+  </script>
 
 
 {% endblock main %}

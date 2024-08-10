@@ -13,6 +13,7 @@ $(document).ready(function () {
     let product_image = $(".product-image-" + index).val();
     let selected_variant_type_id = $("#variant-id-hidden-" + index).val(); // Updated line
     let selected_variation_type_id = $("#variation-id-hidden").val(); // Updated line
+    let max_order_qty = parseInt($(".product-quantity-" + index).attr('max')); // Get the maximum order quantity
 
     console.log("Quantity:", quantity);
     console.log("Title:", product_title);
@@ -27,6 +28,18 @@ $(document).ready(function () {
     console.log("Variation ID:", selected_variation_type_id);
     console.log("Index:", index);
     console.log("Current Element:", this_val);
+
+    // Check if the quantity exceeds the maximum order quantity
+    if (parseInt(quantity) > max_order_qty) {
+      Swal.fire({
+        position: "top-end",
+        icon: "warning",
+        title: "Maximum order quantity exceeded",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      return; // Prevent further execution
+    }
 
     $.ajax({
       url: "/add-to-cart",
@@ -76,6 +89,7 @@ $(document).ready(function () {
     });
   });
 });
+
 
 function cleanTitle(title) {
   // Use a regex to remove the variant part (e.g., "- (50Pcs)")
