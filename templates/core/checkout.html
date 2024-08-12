@@ -40,27 +40,7 @@
                                 <label for="checkout_last_name">Last Name</label>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-check mt-3">
-                                <input class="form-check-input form-check-input_fill" type="checkbox" value=""
-                                    id="create_account" />
-                                <label class="form-check-label" for="create_account">HAVING GST?</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12 company-fields">
-                            <div class="form-floating my-3">
-                                <input type="text" class="form-control" id="checkout_company_name"
-                                    placeholder="Company Name (optional)" />
-                                <label for="checkout_company_name">Company Name</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12 company-fields">
-                            <div class="form-floating my-3">
-                                <input type="text" class="form-control" id="checkout_gst_number"
-                                    placeholder="GST Number (optional)" />
-                                <label for="checkout_gst_number">GST Number</label>
-                            </div>
-                        </div>
+                    
                         <div class="col-md-12">
                             <div class="form-floating my-3">
                                 <input type="text" class="form-control" id="checkout_zipcode"
@@ -209,6 +189,27 @@
                         </div>
                         <!-- billing address -->
                         <div class="col-md-12">
+                            <div class="form-check mt-3">
+                                <input class="form-check-input form-check-input_fill" type="checkbox" value=""
+                                    id="create_account" />
+                                <label class="form-check-label" for="create_account">HAVING GST?</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 company-fields">
+                            <div class="form-floating my-3">
+                                <input type="text" class="form-control" id="checkout_company_name"
+                                    placeholder="Company Name (optional)" />
+                                <label for="checkout_company_name">Company Name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 company-fields">
+                            <div class="form-floating my-3">
+                                <input type="text" class="form-control" id="checkout_gst_number"
+                                    placeholder="GST Number (optional)" />
+                                <label for="checkout_gst_number">GST Number</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
                             <div class="form-floating my-3">
                                 <input type="text" class="form-control" id="checkout_phone" placeholder="Phone *" />
                                 <label for="checkout_phone">Phone *</label>
@@ -302,7 +303,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     var options = {
-        "key": "rzp_live_88QdsrTOMs6hVM",
+        "key": "rzp_test_J49wAxU6gIgE2k",
         "amount": "{{payment.amount}}",
         "currency": "INR",
         "name": "Urban Farm",
@@ -572,6 +573,7 @@ function clearBillingAddress() {
         document.getElementById("billing_address").style.display = isChecked ? "block" : "none";
     });
 </script>
+
 
 
 

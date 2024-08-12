@@ -278,10 +278,18 @@ $(document).ready(function () {
         $("#cart-list").html(response.data);
 
         if (response.refresh_page) {
+          localStorage.setItem('openCartDrawer', 'true');
           // Refresh the page
           window.location.reload();
         }
       },
     });
   });
+  if (localStorage.getItem('openCartDrawer') === 'true') {
+    // Open the cart drawer
+    $("#cartDrawer").addClass('aside_visible');
+
+    // Remove the flag so it doesn't open on subsequent page loads
+    localStorage.removeItem('openCartDrawer');
+  }
 });
