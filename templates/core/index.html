@@ -383,6 +383,7 @@
                                 {% with gst_amount=gst_amounts|get_item:product.id %}
                                     <input type="hidden" value="{{ gst_amount }}" class="gst-applied-{{ product.pid }}">
                                 {% endwith %}
+                                <input type="hidden" value="{{ product.maximum_order_qty }}" class="maximum_order_qty-{{ product.pid }}">
                             {% endfor %}
 
                                             <input type="hidden" value="{{best_picks.pid}}" class="product-id">
@@ -484,6 +485,7 @@
                                 {% with gst_amount=gst_amounts|get_item:product.id %}
                                     <input type="hidden" value="{{ gst_amount }}" class="gst-applied-{{ product.pid }}">
                                 {% endwith %}
+                                <input type="hidden" value="{{ product.maximum_order_qty }}" class="maximum_order_qty-{{ product.pid }}">
                             {% endfor %}
                               <input type="hidden" value="{{new_arrivals.pid}}" class="product-id">
 
