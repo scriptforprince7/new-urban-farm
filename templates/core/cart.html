@@ -69,11 +69,11 @@
                             <td>
                                 <div class="qty-control position-relative">
 
-                                    <input type="number" name="" value="{{item.qty}}"
+                                    <input type="number" name="" value="{{item.qty}}" max="{{ item.maximum_order_qty }}"
                                         class="qty-control__number update-product text-center product-qty-{{product_id}}" data-product="{{product_id}}"/>
 
-                                    <div class="qty-control__reduce update-product" data-product="{{product_id}}">-</div>
-                                    <div class="qty-control__increase update-product" data-product="{{product_id}}">+</div>
+                                    <div class="qty-control__reduce update-product" data-product="{{product_id}}" onclick="decreaseQuantity({{ product_id }}, {{ item.maximum_order_qty }})">-</div>
+                                    <div class="qty-control__increase update-product" data-product="{{product_id}}" onclick="decreaseQuantity({{ product_id }}, {{ item.maximum_order_qty }})">+</div>
                                 </div>
                             </td>
                             <td>

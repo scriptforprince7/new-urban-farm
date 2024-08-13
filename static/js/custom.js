@@ -8,6 +8,7 @@ $(document).ready(function () {
     let product_price = $(".product-price-" + index).val();
     let product_price_wo_gst = $(".product-price-wo-gst-" + index).val();
     let gst_rate = $(".gst_rate-" + index).val();
+    let maximum_order_qty = $(".maximum_order_qty-" + index).val();
     let gst_applied = $(".gst-applied-" + index).val();
     let product_sku = $(".product-sku-" + index).val();
     let product_image = $(".product-image-" + index).val();
@@ -21,6 +22,7 @@ $(document).ready(function () {
     console.log("Price Without Gst:", product_price_wo_gst);
     console.log("gst_rate:", gst_rate);
     console.log("GST Applied:", gst_applied);
+    console.log("Max Order Qty:", maximum_order_qty)
     console.log("ID:", product_id);
     console.log("Image:", product_image);
     console.log("Sku:", product_sku);
@@ -52,6 +54,7 @@ $(document).ready(function () {
         price_wo_gst: product_price_wo_gst,
         gst_rate: gst_rate,
         gst_applied: gst_applied,
+        maximum_order_qty: maximum_order_qty,
         sku: product_sku,
         variant_id: selected_variant_type_id, // Updated line
         variation_id: selected_variation_type_id, // Updated line
@@ -254,42 +257,55 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $(".update-product").on("click", function () {
-    let product_id = $(this).attr("data-product");
-    let this_val = $(this);
-    let product_quantity = $(".product-qty-" + product_id).val();
+      let product_id = $(this).attr("data-product");
+      let this_val = $(this);
+      let product_quantity = $(".product-qty-" + product_id).val();
+      let max_order_qty = parseInt($(".product-qty-" + product_id).attr('max'));
 
-    console.log("Product ID:", product_id);
-    console.log("Product Qty:", product_quantity);
+      console.log("Product ID:", product_id);
+      console.log("Product Qty:", product_quantity);
 
-    $.ajax({
-      url: "/update-cart",
-      data: {
-        id: product_id,
-        qty: product_quantity,
-        refresh_page: true,
-      },
-      dataType: "json",
-      beforeSend: function () {
-        this_val.hide();
-      },
-      success: function (response) {
-        this_val.show();
-        $(".cart-items-count").text(response.totalcartitems);
-        $("#cart-list").html(response.data);
+      // Check if the quantity exceeds the maximum order quantity
+      if (parseInt(product_quantity) > max_order_qty) {
+          Swal.fire({
+              position: "top-end",
+              icon: "warning",
+              title: "Maximum order quantity exceeded",
+              showConfirmButton: false,
+              timer: 1500,
+          });
+          return; // Prevent further execution
+      }
 
-        if (response.refresh_page) {
-          localStorage.setItem('openCartDrawer', 'true');
-          // Refresh the page
-          window.location.reload();
-        }
-      },
-    });
+      $.ajax({
+          url: "/update-cart",
+          data: {
+              id: product_id,
+              qty: product_quantity,
+              refresh_page: true,
+          },
+          dataType: "json",
+          beforeSend: function () {
+              this_val.hide();
+          },
+          success: function (response) {
+              this_val.show();
+              $(".cart-items-count").text(response.totalcartitems);
+              $("#cart-list").html(response.data);
+
+              if (response.refresh_page) {
+                  localStorage.setItem('openCartDrawer', 'true');
+                  // Refresh the page
+                  window.location.reload();
+              }
+          },
+      });
   });
-  if (localStorage.getItem('openCartDrawer') === 'true') {
-    // Open the cart drawer
-    $("#cartDrawer").addClass('aside_visible');
 
-    // Remove the flag so it doesn't open on subsequent page loads
-    localStorage.removeItem('openCartDrawer');
+  if (localStorage.getItem('openCartDrawer') === 'true') {
+      // Open the cart drawer
+      $("#cartDrawer").addClass('aside_visible');
+      // Remove the flag so it doesn't open on subsequent page loads
+      localStorage.removeItem('openCartDrawer');
   }
 });

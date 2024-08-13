@@ -145,7 +145,6 @@ def category(request, main_title):
     products_categories = Product.objects.filter(category__in=categories_all)
     products = Product.objects.filter(main_category=main_categories, product_status="published")
     product_images = ProductImages.objects.filter(product__in=products)
-
     product_variants = ProductVarient.objects.filter(product__in=products)
     variant_types = ProductVariantTypes.objects.filter(product_variant__in=product_variants)
 
@@ -317,7 +316,7 @@ def payment_failed_view(request):
 
 def add_to_cart(request):
     # Ensure all required parameters are present
-    required_params = ['id', 'title', 'qty', 'price', 'image', 'sku', 'price_wo_gst', 'gst_rate', 'gst_applied']
+    required_params = ['id', 'title', 'qty', 'price', 'image', 'sku', 'price_wo_gst', 'gst_rate', 'gst_applied', 'maximum_order_qty']
     for param in required_params:
         if param not in request.GET:
             return JsonResponse({"error": f"Missing parameter: {param}"}, status=400)
@@ -333,6 +332,7 @@ def add_to_cart(request):
         price_wo_gst = request.GET['price_wo_gst']  # Ensure price_wo_gst is a float
         gst_rate = request.GET['gst_rate']  # Ensure gst_rate is a float
         gst_applied = request.GET['gst_applied']  # Ensure gst_rate is a float
+        maximum_order_qty = request.GET['maximum_order_qty']  # Ensure gst_rate is a float
     except ValueError:
         return JsonResponse({"error": "Invalid numeric value"}, status=400)
 
@@ -348,6 +348,7 @@ def add_to_cart(request):
         'price_wo_gst': price_wo_gst,
         'gst_rate': gst_rate,
         'gst_applied': gst_applied,  # Convert Decimal to string
+        'maximum_order_qty': maximum_order_qty,  # Convert Decimal to string
     }
 
     if 'cart_data_obj' in request.session:
